@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\CreateProductCommand;
 use App\Interfaces\CategoryRepositoryInterface;
 use App\Interfaces\ProductRepositoryInterface;
 use App\Repositories\CategoryRepository;
@@ -25,6 +26,10 @@ class RepositoryServiceProvider extends ServiceProvider
             CategoryRepositoryInterface::class,
             CategoryRepository::class
         );
+
+        $this->commands([
+            CreateProductCommand::class,
+        ]);
     }
 
     /**
