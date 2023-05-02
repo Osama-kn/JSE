@@ -45,11 +45,11 @@ class ProductController extends Controller
             $filename = str_replace(' ', '', $filename);
             $filename = $fileHash . '' . $filename;
 
-            // Store the file in the "public/category" directory
-            Storage::putFileAs('public/category', $file, $filename);
+            // Store the file in the "public/product" directory
+            Storage::putFileAs('public/product', $file, $filename);
 
             // Get the URL for the stored image file
-            $image =  Storage::url('public/category/' . $filename);
+            $image =  Storage::url('public/product/' . $filename);
 
             // Create a new product record and save it to the database
             $product = $this->productRepository->saveProduct(
