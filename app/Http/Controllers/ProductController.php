@@ -71,14 +71,14 @@ class ProductController extends Controller
 
 
     /**
-     * Get all products
+     * Get all products with categories
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function getAll()
     {
         try {
-            $products = $this->productRepository->getAllProducts();
+            $products = $this->productRepository->getAllProductsWithProducts();
             return $this->successResponse($products);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());

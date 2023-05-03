@@ -23,4 +23,8 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return Product::all();
     }
+
+    public function getAllProductsWithProducts(){
+        return Product::with('categories')->get();
+    }
 }
