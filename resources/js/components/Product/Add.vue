@@ -3,7 +3,7 @@
         <h1>
             ADD PRODUCT
         </h1>
-        <b-form @submit.prevent="submitNewProduct" @reset="onReset">
+        <b-form @submit.prevent="submit" @reset="reset">
             <b-form-group id="name" label="Name:" label-for="name">
                 <b-form-input id="name" type="text" name="name" v-model="form.name" required
                     placeholder="Product name"></b-form-input>
@@ -19,14 +19,21 @@
                     placeholder="Enter product price"></b-form-input>
             </b-form-group>
 
-            <b-form-group id="input-group-4" label="Product category:" label-for="categories">
-                <b-form-select v-model="form.categories_ids" :options="categories" value-field="id" text-field="name"
-                    disabled-field="notEnabled" multiple required>
-                </b-form-select>
+            <b-form-group id="catgories_ids" label="Categories" label-for="categories"
+                :invalid-feedback="form.categories_ids.length === 0 ? 'Please select at least one category' : null">
+                <multiselect name="categories" v-model="form.categories_ids"
+                    :options="categories.map(category => category.id)"
+                    :custom-label="opt => categories.find(x => x.id == opt).name" :multiple="true" :close-on-select="false"
+                    :clear-on-select="false" :preserve-search="true" placeholder="Choose a category" :preselect-first="true"
+                    :allow-empty="false">
+                    <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single"
+                            v-if="categories.length" v-show="!isOpen">{{ form.categories_ids.length }} options
+                            selected</span></template>
+                </multiselect>
             </b-form-group>
 
             <b-form-group id="image" label="Product image:" label-for="image">
-                <b-form-file v-model="form.image" placeholder="Choose a file or drop it here..."
+                <b-form-file v-model="form.image" required placeholder="Choose a file or drop it here..."
                     drop-placeholder="Drop file here..." accept="image/jpeg, image/png, image/gif"></b-form-file>
             </b-form-group>
 
@@ -45,12 +52,8 @@ export default {
             form: {
                 name: '',
                 description: '',
-                photo: [],
+                image: [],
                 categories_ids: []
-            },
-            alert: {
-                message: '',
-                status: false
             }
         }
     },
@@ -70,13 +73,19 @@ export default {
 
         },
         submit() {
+            if (this.form.categories_ids.length == 0) {
+                this.makeToast('danger', "You must select at least one category")
+                return;
+            }
             let formData = new FormData();
 
             formData.append("name", this.form.name);
             formData.append("description", this.form.description);
             formData.append("price", this.form.price);
             formData.append("image", this.form.image);
-            // formData.append("categories_ids", this.form.categories_ids);
+            this.form.categories_ids.forEach(c => {
+                formData.append("categories_ids[]", c);
+            })
 
             this.saveProduct(formData)
         },
@@ -85,23 +94,29 @@ export default {
                 name: '',
                 description: '',
                 price: '',
-                photo: '',
+                image: '',
                 categories_ids: []
             }
         },
         saveProduct(formData) {
             axios.post(`/api/products`, formData)
                 .then(res => {
-                    if (res.status == 201) {
-                        this.alert.status = true
-                        this.alert.message = "Product added with success"
-                        this.onReset()
-                    }
+                    this.makeToast('success', "Product Has been saved successfully")
+                    this.reset()
                 })
                 .catch(err => {
+                    this.makeToast('danger', "Something went wrong")
                     console.log('error', err)
                 });
+        },
+        makeToast(variant = null, content) {
+            this.$bvToast.toast(content, {
+                title: `${variant || 'default'}`,
+                variant: variant,
+                solid: true
+            })
         }
     }
 }
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
