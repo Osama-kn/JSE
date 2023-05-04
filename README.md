@@ -1,64 +1,56 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Coding chalange - Laravel / VueJs By KNOUZ Oussama
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This project is a web application built using Laravel and Vue.js. It provides the following features: 
+- Ability to create a product via web or CLI
+- A listing of products with the ability to sort by price and/or filter by category via the web interface
 
-## About Laravel
+### Tech Specification
+  - Node 15.14.0
+  - Laravel 8
+  - PHP 7
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Installation
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. Clone the repository to your local machine using `git clone https://github.com/Osama-kn/JSE.git`.
+2. Run `composer install` to install the PHP dependencies.
+3. Run `npm install` to install the JavaScript dependencies.
+4. Create a new database for the project and update the `.env` file with your database credentials.
+5. Run `php artisan migrate` to migrate the database.
+6. Run `php artisan db:seed` to seed the database with sample data.
+7. Run `php artisan storage:link` to create a symbolic link from the `public/storage` directory to the `storage/app/public` directory.
+8. Run `php artisan key:generate` to generate a new application key.
+9. Run `npm run dev` to build the JavaScript and CSS assets.
+10. Run `php artisan serve` to start the local development server.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## Usage
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Once you have the project running, you can access it in your web browser at `http://localhost:8000`.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Creating a Product
 
-## Laravel Sponsors
+To create a product, follow these steps:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. Navigate to the "Add Product" page.
+2. Fill out the product information form.
+3. Submit the form to create the product.
 
-### Premium Partners
+Alternatively, you can create a product using the CLI by running the following command:
+    `php artisan create:product {name} {description} {price} {image_url} {categories_ids}`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- `{name}`: the name of the product
+- `{description}`: a description of the product
+- `{price}`: the price of the product
+- `{image_url}`: a URL to an image of the product
+- `{categories_ids}`: a comma-separated list of category IDs that the product belongs to
 
-## Contributing
+### Listing Products
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+To view a listing of products, follow these steps:
 
-## Code of Conduct
+1. Navigate to the "Products" page.
+2. Use the "Sort By" dropdown to sort the products by price (ascending or descending).
+3. Use the "Filter By Category" input to filter the products by category.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+License
+----
