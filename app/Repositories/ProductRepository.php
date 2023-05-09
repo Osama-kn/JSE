@@ -19,14 +19,11 @@ class ProductRepository implements ProductRepositoryInterface
             'image' => $image
         ]);
     }
-
+    
 
     public function getAllProducts(): Collection
     {
         return Product::all();
     }
 
-    public function getAllProductsWithProducts(){
-        return Product::with('categories')->get();
-    }
 }
