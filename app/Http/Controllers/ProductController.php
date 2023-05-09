@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Traits\ApiResponser;
-use App\Interfaces\ProductRepositoryInterface;
 use App\Services\ProductService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -13,12 +12,11 @@ class ProductController extends Controller
 {
     use ApiResponser;
 
-    private ProductRepositoryInterface $productRepository;
-    protected $productService;
+    protected ProductService $productService;
 
-    public function __construct(ProductRepositoryInterface $productRepository, ProductService $productService)
+    public function __construct(ProductService $productService)
     {
-        $this->productRepository = $productRepository;
+
         $this->productService = $productService;
     }
 
@@ -33,12 +31,14 @@ class ProductController extends Controller
     {
         try {
 
+            $imageUrl = $this->productService->saveProductImage($request->file('image'));
+
             // Create a new product with the uploaded image
-            $product = $this->productService->createProduct(
+            $product = $this->productService->createProductWithCategories(
                 $request->name,
                 $request->description,
                 $request->price,
-                $request->file('image'),
+                $imageUrl,
                 $request->categories_ids
             );
 
@@ -58,7 +58,7 @@ class ProductController extends Controller
     public function getAll(): JsonResponse
     {
         try {
-            $products = $this->productRepository->getAllProducts();
+            $products = $this->productService->getAllProductsWithCategories();
             return $this->successResponse($products);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
