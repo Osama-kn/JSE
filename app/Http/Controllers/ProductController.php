@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProductRequest;
 use App\Http\Traits\ApiResponser;
 use App\Interfaces\ProductRepositoryInterface;
 use Exception;
@@ -23,20 +24,12 @@ class ProductController extends Controller
     /**
      * Save a new product
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\CreateProductRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function save(Request $request)
+    public function save(CreateProductRequest $request)
     {
         try {
-            // Validate the request data
-            $this->validate($request, [
-                'name' => 'required',
-                'description' => 'required',
-                'price' => 'required',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'categories_ids' => 'required|array|exists:categories,id'
-            ]);
 
             // Get the uploaded file and generate a unique filename for it
             $file = $request->file('image');
