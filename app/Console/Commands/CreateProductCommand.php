@@ -44,13 +44,16 @@ class CreateProductCommand extends Command
      */
     public function handle()
     {
+        // Retrieve the product attributes from the command arguments
         $name = $this->argument('name');
         $description = $this->argument('description');
         $price = $this->argument('price');
         $image = $this->argument('image_url');
         $categories_ids = $this->argument('categories_ids');
+        // Convert comma-separated string to an array of category IDs
         $categories_ids = explode(',', $categories_ids);
 
+        // Create a request object for validation
         $request = [
             'name' => $name,
             'description' => $description,
@@ -58,16 +61,21 @@ class CreateProductCommand extends Command
             'image' => $image,
             'categories_ids' => $categories_ids
         ];
-        
+
+        // Use custom validation rules to validate the input data
         $validator = new CreateProductRequest();
         $rules = $validator->rules();
         $validator = Validator::make($request, $rules);
+
+        // If validation fails, return error message and status code
         if ($validator->fails()) {
             $this->error($validator->errors()->first());
             return 1;
         }
 
+        // Save the product to the database using the ProductRepository 
         $product = $this->productRepository->saveProduct($name, $description, $price, $image);
+        // Update the product categories
         $product->categories()->sync($categories_ids);
         $this->info('Product created successfully!');
     }
