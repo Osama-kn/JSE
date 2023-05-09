@@ -3,9 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Http\Requests\CreateProductRequest;
-use App\Interfaces\ProductRepositoryInterface;
+use App\Services\ProductService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CreateProductCommand extends Command
@@ -24,17 +23,18 @@ class CreateProductCommand extends Command
      * @var string
      */
     protected $description = 'Create a new product';
-    protected $productRepository;
+    protected $productService;
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(ProductRepositoryInterface $productRepository)
-    {
+    public function __construct(
+        ProductService $productService
+    ) {
         parent::__construct();
-        $this->productRepository = $productRepository;
+        $this->productService = $productService;
     }
 
     /**
@@ -73,10 +73,9 @@ class CreateProductCommand extends Command
             return 1;
         }
 
-        // Save the product to the database using the ProductRepository 
-        $product = $this->productRepository->saveProduct($name, $description, $price, $image);
-        // Update the product categories
-        $product->categories()->sync($categories_ids);
+        // Save the product to the database using the ProductService 
+        $this->productService->createProductWithCategories($name, $description, $price, $image, $categories_ids);
+
         $this->info('Product created successfully!');
     }
 }
