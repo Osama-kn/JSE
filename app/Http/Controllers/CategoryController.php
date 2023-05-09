@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Traits\ApiResponser;
 use App\Interfaces\CategoryRepositoryInterface;
 use Exception;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
@@ -24,7 +24,7 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAll()
+    public function getAll() : JsonResponse
     {
         try {
             $categories = $this->categoryRepository->getAllCategories();

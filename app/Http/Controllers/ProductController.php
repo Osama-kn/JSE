@@ -6,7 +6,7 @@ use App\Http\Requests\CreateProductRequest;
 use App\Http\Traits\ApiResponser;
 use App\Interfaces\ProductRepositoryInterface;
 use Exception;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -27,7 +27,7 @@ class ProductController extends Controller
      * @param \App\Http\Requests\CreateProductRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function save(CreateProductRequest $request)
+    public function save(CreateProductRequest $request): JsonResponse
     {
         try {
 
@@ -68,7 +68,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAll()
+    public function getAll(): JsonResponse
     {
         try {
             $products = $this->productRepository->getAllProductsWithProducts();

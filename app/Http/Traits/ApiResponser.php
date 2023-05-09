@@ -2,10 +2,11 @@
 
 namespace App\Http\Traits;
 
+use Illuminate\Http\JsonResponse;
 
 trait ApiResponser
 {
-    protected function successResponse($data, $message = null, $code = 200, $statut = "Success", $params = [])
+    protected function successResponse($data, $message = null, $code = 200, $statut = "Success", $params = []): JsonResponse
     {
         return response()->json(
             [
@@ -21,7 +22,7 @@ trait ApiResponser
         );
     }
 
-    protected function errorResponse($message = "An error has occured !", $code = 400, $trace = null)
+    protected function errorResponse($message = "An error has occured !", $code = 400, $trace = null): JsonResponse
     {
         return response()->json(
             [
@@ -37,7 +38,7 @@ trait ApiResponser
         );
     }
 
-    protected function confirmResponse($data, $message = null, $code = 200)
+    protected function confirmResponse($data, $message = null, $code = 200): JsonResponse
     {
         return response()->json([
             'status' => 'Confirm',
