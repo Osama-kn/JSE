@@ -1,8 +1,17 @@
 <template>
     <div>
-        <b-input v-model="filter" placeholder="Filter By Category"></b-input>
-        <b-table striped hover :items="products" :fields="fields" responsive :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc" sort-icon-left :filter="filter" :filter-included-fields="['categories']">
+        
+        <multiselect name="categories" v-model="selectedCategories" :options="categories.map(category => category.id)"
+            :custom-label="opt => categories.find(x => x.id == opt).name" :multiple="true" :close-on-select="false"
+            :clear-on-select="false" :preserve-search="true" placeholder="Filter By Categories" :preselect-first="true"
+            :allow-empty="false">
+            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single"
+                    v-if="categories.length" v-show="!isOpen">{{ selectedCategories.length }} options
+                    selected</span></template>
+        </multiselect>
+
+        <b-table striped hover :items="filteredProducts" :fields="fields" responsive sort-icon-left :filter="filter"
+            :filter-included-fields="['categories']">
             <hr />
             <template #cell(image)="data">
                 <img class="product-image" :src="data.item.image" :alt=data.item.name />
@@ -19,6 +28,8 @@ export default {
     data() {
         return {
             products: [],
+            categories: [],
+            selectedCategories: [],
             filter: '',
             fields: [{
                 key: 'id',
@@ -42,7 +53,8 @@ export default {
         }
     },
     mounted() {
-        this.getProducts()
+        this.getProducts();
+        this.getCategories();
     },
     methods: {
         async getProducts() {
@@ -53,6 +65,33 @@ export default {
                 this.products = []
             })
         },
-    }
+        async getCategories() {
+            axios.get(`/api/categories`)
+                .then(res => {
+                    this.categories = res.data.data
+                })
+                .catch(error => {
+                    console.log(error)
+                    this.categories = []
+                });
+
+        },
+    },
+    computed: {
+        filteredProducts() {
+            if (this.selectedCategories.length > 0) {
+                return this.products.filter(product => product.categories.some(category => this.selectedCategories.includes(category.id)));
+            } else {
+                return this.products;
+            }
+        }
+    },
+    watch: {
+        selectedCategories() {
+            this.filter = '';
+        }
+    },
+
 }
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
