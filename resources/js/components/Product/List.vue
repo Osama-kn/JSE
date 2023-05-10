@@ -1,13 +1,14 @@
 <template>
     <div>
-        
+
         <multiselect name="categories" v-model="selectedCategories" :options="categories.map(category => category.id)"
             :custom-label="opt => categories.find(x => x.id == opt).name" :multiple="true" :close-on-select="false"
             :clear-on-select="false" :preserve-search="true" placeholder="Filter By Categories" :preselect-first="true"
-            :allow-empty="false">
-            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single"
-                    v-if="categories.length" v-show="!isOpen">{{ selectedCategories.length }} options
-                    selected</span></template>
+            :allow-empty="true">
+            <template slot="selection" slot-scope="{ values, search, isOpen }">
+                <span class="border px-2 mx-1" v-for="category in selectedCategories">{{ categories.find(x => x.id ==
+                    category).name }} </span>
+            </template>
         </multiselect>
 
         <b-table striped hover :items="filteredProducts" :fields="fields" responsive sort-icon-left :filter="filter"
